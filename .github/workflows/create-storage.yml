@@ -1,27 +1,23 @@
-on: [push]
-name: Azure ARM
+name: Learning GitHub Script
+on:
+  issues:
+    types: [opened]
 jobs:
-    build-and-deploy:
-      runs-on: ubuntu-latest
-      environment: 'dev'
-      steps:
-      
-        # Checkout code
-      - uses: actions/checkout@main
-
-        # Log into Azure
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-        # Deploy ARM template
-      - name: Run ARM deploy
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./azuredeploy.json
-          parameters: storageAccountType=Standard_LRS
-
-        # output containerName variable from template
-      - run: echo ${{ steps.deploy.outputs.containerName }}
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/github-script@0.8.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+            github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: "🎉 You've created this issue comment using GitHub Script!!!"
+            })
+            github.projects.createCard({
+            column_id: {{columnID}},
+            content_id: context.payload.issue.id,
+            content_type: "Issue"
+            });
