@@ -6,7 +6,7 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/github-script@0.8.0
+    - uses: actions/github-script@v6.3.3
       with:
         github-token: github.GITHUB_TOKEN
         script: return "Hello there!!!"
