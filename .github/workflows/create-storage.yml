@@ -8,7 +8,7 @@ jobs:
     steps:
     - name: Add issue to project board
       if: contains(github.event.issue.labels.*.name, 'bug')
-      uses: actions/github-script@0.8.0
+      uses: actions/github-script@v6.3.3
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
